@@ -3,19 +3,23 @@ import { LayoutDashboard, Users, UserCog, Dumbbell, Calendar, CreditCard, BarCha
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
+import { useLocation, Link } from 'react-router-dom';
+
 const navItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard', active: false },
-    { icon: Users, label: 'Members', href: '/members', active: false },
-    { icon: UserCog, label: 'Trainers', href: '/trainers', active: false },
-    { icon: Dumbbell, label: 'Workouts', href: '/workouts', active: false },
-    { icon: Calendar, label: 'Schedule', href: '/schedule', active: false },
-    { icon: CreditCard, label: 'Payments', href: '/payments', active: false },
-    { icon: BarChart3, label: 'Analytics', href: '/analytics', active: true }, // Mock active state
-    { icon: MessageSquare, label: 'Messages', href: '/messages', active: false },
-    { icon: Settings, label: 'Settings', href: '/settings', active: false },
+    { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
+    { icon: Users, label: 'Members', href: '/members' },
+    { icon: UserCog, label: 'Trainers', href: '/trainers' },
+    { icon: Dumbbell, label: 'Workouts', href: '/workouts' },
+    { icon: Calendar, label: 'Schedule', href: '/schedule' },
+    { icon: CreditCard, label: 'Payments', href: '/payments' },
+    { icon: Settings, label: 'Plans', href: '/plans' },
+    { icon: BarChart3, label: 'Analytics', href: '/analytics' },
+    { icon: MessageSquare, label: 'Messages', href: '/messages' },
 ];
 
 export function Sidebar() {
+    const location = useLocation();
+
     return (
         <div className="flex h-screen w-64 flex-col border-r bg-[#0b0f14] border-white/10 text-white fixed left-0 top-0 hidden md:flex">
             {/* Branding */}
@@ -33,22 +37,26 @@ export function Sidebar() {
 
             {/* Navigation */}
             <div className="flex-1 overflow-y-auto py-6 px-3 space-y-1">
-                {navItems.map((item) => (
-                    <Button
-                        key={item.label}
-                        variant="ghost"
-                        className={cn(
-                            "w-full justify-start gap-3 px-3 py-6 rounded-xl hover:bg-white/5 hover:text-white transition-all",
-                            item.active && "bg-white/10 text-white shadow-[0_0_15px_rgba(255,255,255,0.05)] border border-white/5"
-                        )}
-                    >
-                        <item.icon className={cn("h-5 w-5", item.active ? "text-blue-400" : "text-slate-400")} />
-                        <span className={cn("font-medium", item.active ? "text-white" : "text-slate-400")}>{item.label}</span>
-                        {item.label === "Messages" && (
-                            <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold">7</span>
-                        )}
-                    </Button>
-                ))}
+                {navItems.map((item) => {
+                    const isActive = location.pathname.startsWith(item.href);
+                    return (
+                        <Link key={item.label} to={item.href}>
+                            <Button
+                                variant="ghost"
+                                className={cn(
+                                    "w-full justify-start gap-3 px-3 py-6 rounded-xl hover:bg-white/5 hover:text-white transition-all mb-1",
+                                    isActive && "bg-white/10 text-white shadow-[0_0_15px_rgba(255,255,255,0.05)] border border-white/5"
+                                )}
+                            >
+                                <item.icon className={cn("h-5 w-5", isActive ? "text-blue-400" : "text-slate-400")} />
+                                <span className={cn("font-medium", isActive ? "text-white" : "text-slate-400")}>{item.label}</span>
+                                {item.label === "Messages" && (
+                                    <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold">7</span>
+                                )}
+                            </Button>
+                        </Link>
+                    )
+                })}
             </div>
 
             {/* Bottom Promo Card */}
