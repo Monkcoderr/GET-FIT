@@ -21,11 +21,11 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/fitflow_pro
 .catch(err => console.error('MongoDB Connection Error:', err));
 
 // Routes
-// app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/members', require('./routes/memberRoutes'));
 app.use('/api/plans', require('./routes/planRoutes'));
-// app.use('/api/payments', require('./routes/paymentRoutes'));
-// app.use('/api/attendance', require('./routes/attendanceRoutes'));
+app.use('/api/payments', require('./routes/paymentRoutes'));
+app.use('/api/attendance', require('./routes/attendanceRoutes'));
 
 app.get('/', (req, res) => {
     res.send('FitFlow Pro API is running');
